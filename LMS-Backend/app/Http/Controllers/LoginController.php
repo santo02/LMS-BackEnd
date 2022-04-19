@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Student;
-use App\Models\Students;
-use App\Models\Theacers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -20,26 +17,18 @@ class LoginController extends Controller
         ]);
 
         //    check email
-        $students = Students::where('email',  $fields['email'])->first();
-        $Theacer = Theacers::where('email',  $fields['email'])->first();
-
-        // check password
-        if ($students && Hash::check($fields['password'], $students->password)) {
-            $token = $students->createToken('myapptoken')->plainTextToken;
+        $User = User::where('email',  $fields['email'])->first();
+              
+        if ($User && Hash::check($fields['password'], $User->password)) {
+            $token = $User->createToken('myapptoken')->plainTextToken;
             $response = [
-                'user' => $students,
+                'user' => $User,
+                'message' => 'Login success',
                 'token' => $token
             ];
-            return response($response, 201);
-
-        }elseif ($Theacer && Hash::check($fields['password'], $Theacer->password)) {
-            $token = $Theacer->createToken('myapptoken')->plainTextToken;
-            $response = [
-                'user' => $Theacer,
-                'token' => $token
-            ];
-            return response($response, 201);
             
+            return response($response, 201);
+                    
         } else {
             return response([
                 'message' => 'Login Failed',

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Students;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Student_Auth extends Controller
 {
@@ -15,22 +16,33 @@ class Student_Auth extends Controller
             'name' => 'required|string|max:20',
             'NIS' => 'required|string|unique:students',
             'phone' => 'required|string',
-            'email' => 'required|string|unique:students',
+            'email' => 'required|string|unique:users',
             'address' => 'required|string',
             'username' => 'required|string',
             'password' => 'required|string|confirmed'
-
         ]);
-        $student = Students::create([
+
+        User::create([
             'name' => $fields['name'],
-            'NIS' => $fields['NIS'],
-            'phone' => $fields['phone'],
             'email' => $fields['email'],
-            'address' => $fields['address'],
             'username' => $fields['username'],
             'password' => bcrypt($fields['password']),
             'role' => "siswa"
         ]);
+
+        $id = DB::table('users')->orderBy('id', 'DESC')->limit(1)->get();
+        foreach($id as $i){
+            $id_user = $i->id; 
+        }
+
+        $student = Students::create([
+            'user_id' => $id_user,
+            'NIS' => $fields['NIS'],
+            'phone' => $fields['phone'],
+            'address' => $fields['address']
+        ]);
+
+
 
         $token = $student->createToken('myapptoken')->plainTextToken;
 
@@ -41,4 +53,6 @@ class Student_Auth extends Controller
 
         return response($response, 201);
     }
+
+
 }

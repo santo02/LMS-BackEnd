@@ -15,17 +15,12 @@ class CreateTheacersTable extends Migration
     {
         Schema::create('theacers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('NIP')->unique();
             $table->string('phone');
-            $table->string('email')->unique();
             $table->string('address');
-            $table->string('username');
-            $table->string('password');
-            $table->string('role');
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
         });
     }
 
