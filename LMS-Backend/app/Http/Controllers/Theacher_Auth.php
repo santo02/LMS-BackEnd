@@ -50,4 +50,27 @@ class Theacher_Auth extends Controller
         return response($response, 201);
     }
     
+    public function index(){
+        $data = DB::table('theacers')
+        ->join('users', 'user_id', '=', 'users.id')
+        ->select('users.name','users.email', 'theacers.NIP', 'theacers.phone', 'theacers.address')
+        ->get();
+
+        $response = [
+            'user' => $data
+        ];
+
+        return response($response, 201);
+    }
+
+    public function delete($id){
+        User::destroy($id);
+
+        $response = [
+            'id' => $id,
+            'message' => "Berhasil dihapus"
+        ];
+        return response($response, 201);
+    }
+
 }

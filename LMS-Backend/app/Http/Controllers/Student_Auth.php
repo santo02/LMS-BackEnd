@@ -42,17 +42,34 @@ class Student_Auth extends Controller
             'address' => $fields['address']
         ]);
 
-
-
         $token = $student->createToken('myapptoken')->plainTextToken;
-
         $response = [
             'user' => $student,
             'token' => $token
+        ];
+        
+        return response($response, 201);
+    }
+
+    public function index(){
+        $data = DB::table('students')
+        ->join('users', 'user_id', '=', 'users.id')
+        ->select('users.name','users.email', 'students.NIS', 'students.phone', 'students.address')
+        ->get();
+
+        $response = [
+            'user' => $data
         ];
 
         return response($response, 201);
     }
 
+    public function delete($id){
+        User::destroy($id);
 
+        $response = [
+            'message' => "Berhasil dihapus"
+        ];
+        return response($response, 201);
+    }
 }
