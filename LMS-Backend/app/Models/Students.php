@@ -13,9 +13,7 @@ class Students extends Model
 
     protected $guarded = ['id'];
 
-    
     public function User(){
         return $this->belongsTo(\App\Models\User::class);
     }
-
 }
