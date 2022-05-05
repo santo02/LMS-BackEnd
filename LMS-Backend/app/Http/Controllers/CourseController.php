@@ -15,7 +15,9 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $course = DB::table('courses')->get();
+        $theachers_id = Auth::User()->id;
+        
+        $course = DB::table('courses')->where('theachers_id', $theachers_id)->get();
 
         if (is_null($course)) {
             $response = [
@@ -24,8 +26,9 @@ class CourseController extends Controller
             return response($response, 201);
         }
         $response = [
-            'course' => $course,
+            'course' => $course
         ];
+
         return response($response, 201);
     }
 
@@ -53,12 +56,11 @@ class CourseController extends Controller
                 'enroll_key' => $fields['enroll_key'],
                 'theachers_id' => $theachers_id
             ]);
-        }
-
-        $response = [
+            
+            $response = [
             'message' => "succesfully"
         ];
-
+        }
         return response($response, 201);
     }
 

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DetailCourseController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Student_Auth;
 use App\Http\Controllers\Theacher_Auth;
 use GuzzleHttp\Middleware;
@@ -39,5 +41,10 @@ Route::group(['middleware' => ['auth:sanctum', 'CheckRole:guru']], function () {
     Route::post('/add-course', [CourseController::class, 'store']);
     Route::delete('/delete-course/{id}', [CourseController::class, 'delete']);
     Route::put('/update-course/{id}', [CourseController::class, 'Update']);
-
+    
+    // My course
+    Route::get('/get-detail/{id}', [DetailCourseController::class, 'index']);
+    Route::post('/add-module/{id}', [ModuleController::class, 'store']);
+    Route::get('/update-module/{id}', [ModuleController::class, 'update']);
+    Route::delete('/delete-module/{id}', [ModuleController::class, 'destroy']);
 });
