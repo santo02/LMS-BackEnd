@@ -56,8 +56,6 @@ class ModuleController extends Controller
             $request->all()
         );
         
-
-        
         $response = [
             'message' => "Module has been update"
         ];
