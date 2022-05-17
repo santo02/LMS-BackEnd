@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\course;
+use App\Models\Theacers;
 use App\Models\User;
 use Dotenv\Validator;
 use Illuminate\Auth\Events\Validated;
@@ -15,18 +16,19 @@ class CourseController extends Controller
 {
     public function index()
     {
-        $theachers_id = Auth::User()->id;
-        
+        $users_id = Auth::User()->id;
+        $theachers_id = Theacers::where('user_id', $users_id)->first()->id;        
         $course = DB::table('courses')->where('theachers_id', $theachers_id)->get();
 
         if (is_null($course)) {
             $response = [
                 'message' => "Data not found"
             ];
-            return response($response, 201);
+            return response($response, 401);
         }
         $response = [
-            'course' => $course
+            'course' => $course,
+            'tch_id' => $theachers_id
         ];
 
         return response($response, 201);
@@ -44,7 +46,8 @@ class CourseController extends Controller
             'enroll_key' => 'required|string'
         ]);
 
-        $theachers_id = Auth::User()->id;
+        $users_id = Auth::User()->id;
+        $theachers_id = Theacers::where('user_id', $users_id)->first()->id;
 
         if ($request->file('thumbnail')) {
             $thumbnail = $request->file('thumbnail')->store('thumbnail');
@@ -80,11 +83,10 @@ class CourseController extends Controller
         ];
         return response($response, 201);
     }
-
-
     public function Update(Request $request,  $id)
     {
-        $theachers_id = Auth::User()->id;
+        $users_id = Auth::User()->id;
+        $theachers_id = Theacers::where('user_id', $users_id)->first()->id;
         $course = course::find($id);
         $course->title = $request->title;
         $course->thumbnail = $request->thumbnail;
@@ -93,7 +95,6 @@ class CourseController extends Controller
         $course->enroll_key = $request->enroll_key;
         $course->theachers_id = $theachers_id;
         $course->save();
-        
         return $course;
     }
 }

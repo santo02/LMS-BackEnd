@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DetailCourseController;
+use App\Http\Controllers\Enr0llmentController;
+use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\MyCourseController;
 use App\Http\Controllers\Student_Auth;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\Theacher_Auth;
 use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
@@ -41,10 +46,29 @@ Route::group(['middleware' => ['auth:sanctum', 'CheckRole:guru']], function () {
     Route::post('/add-course', [CourseController::class, 'store']);
     Route::delete('/delete-course/{id}', [CourseController::class, 'delete']);
     Route::put('/update-course/{id}', [CourseController::class, 'Update']);
-    
+
     // My course
     Route::get('/get-detail/{id}', [DetailCourseController::class, 'index']);
     Route::post('/add-module/{id}', [ModuleController::class, 'store']);
     Route::get('/update-module/{id}', [ModuleController::class, 'update']);
     Route::delete('/delete-module/{id}', [ModuleController::class, 'destroy']);
+
+    //enroll siswa
+    Route::post('/enroll/{id}', [EnrollmentController::class, 'enroll_byteach']);
+    Route::delete('/reset_enroll/{id}', [EnrollmentController::class, 'reset_enrollment']);
+
+    //assignment
+    Route::post('/add-assignment', [AssignmentController::class, 'store']);
+    Route::get('/update-assignment/{id}', [AssignmentController::class, 'update']);
+    Route::delete('/delete-assignment/{id}', [AssignmentController::class, 'delete']);
+});
+
+Route::group(['middleware' => ['auth:sanctum', 'CheckRole:siswa']], function () {
+    //Selfenrollment
+    Route::post('/enrollment/{id}', [EnrollmentController::class, 'enroll']);
+    //mycourse
+    Route::get('/mycourse', [MyCourseController::class, 'mycourse']);
+    //submission
+    Route::post('/submission/{id}', [SubmissionController::class, 'store']);
+    //   
 });
