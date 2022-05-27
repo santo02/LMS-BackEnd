@@ -15,12 +15,11 @@ class MyCourseController extends Controller
     public function myCourse(){
         $users_id = Auth::User()->id;
         $student_id = Students::where('user_id', $users_id)->first()->id;
-        
         $MyCourse  = myCourse::join('courses', 'courses.id', '=', 'my_courses.course_id')
         ->where('my_courses.student_id', $student_id)
         ->select('courses.id','courses.title', 'courses.thumbnail','courses.deskripsi')
         ->get();
-        return response([
+        return response([ 
             'course' => $MyCourse   
         ],201);
     }

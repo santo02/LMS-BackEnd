@@ -15,6 +15,7 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('course_id')->references('id')->on('courses');
             $table->bigInteger('theacher_id');
             $table->string('title');
             $table->string('file');
@@ -22,6 +23,7 @@ class CreateAssignmentsTable extends Migration
             $table->date('deadline');
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -35,4 +35,12 @@ class LoginController extends Controller
             ], 401);
         }
     }
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+
+        return response([ 
+            'message' => 'Logged out'
+        ],201);
+    }
+    
 }

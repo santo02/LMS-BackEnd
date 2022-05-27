@@ -22,8 +22,11 @@ class CreateModulesTable extends Migration
             $table->string('week');
             $table->string('sesion');
             $table->string('file');
+            $table->string('theachers_id'); 
             $table->timestamps();
         });
+
+        
     }
 
     /**
