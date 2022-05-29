@@ -22,12 +22,12 @@ class LoginController extends Controller
         if ($User && Hash::check($fields['password'], $User->password)) {
             $token = $User->createToken('myapptoken')->plainTextToken;
             $response = [
-                'user' => $User,
                 'message' => 'Login success',
+                'user' => $User,
                 'token' => $token
             ];
             
-            return response($response, 201);
+            return response($response, 200);
                     
         } else {
             return response([
@@ -40,7 +40,7 @@ class LoginController extends Controller
 
         return response([ 
             'message' => 'Logged out'
-        ],201);
+        ],200);
     }
     
 }
