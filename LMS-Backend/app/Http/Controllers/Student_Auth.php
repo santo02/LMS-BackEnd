@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Students;
 use App\Models\User;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -43,12 +44,13 @@ class Student_Auth extends Controller
         ]);
 
         $token = $student->createToken('myapptoken')->plainTextToken;
+      
         $response = [
-            'user' => $student,
-            'token' => $token
+            'message' => 'Success',
+            'user' => $student
         ];
         
-        return response($response, 201);
+        return response($response, 200);
     }
 
     public function index(){
@@ -61,7 +63,7 @@ class Student_Auth extends Controller
             'user' => $data
         ];
 
-        return response($response, 201);
+        return response($response, 200);
     }
 
     public function delete($id){
@@ -70,6 +72,6 @@ class Student_Auth extends Controller
         $response = [
             'message' => "Berhasil dihapus"
         ];
-        return response($response, 201);
+        return response($response, 200);
     }
 }

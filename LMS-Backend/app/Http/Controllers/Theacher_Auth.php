@@ -43,11 +43,11 @@ class Theacher_Auth extends Controller
         $token = $Theacher->createToken('myapptoken')->plainTextToken;
 
         $response = [
+            'message' => 'Success',
             'user' => $Theacher,
-            'token' => $token
         ];
 
-        return response($response, 201);
+        return response($response, 200);
     }
     
     public function index(){
@@ -60,7 +60,7 @@ class Theacher_Auth extends Controller
             'user' => $data
         ];
 
-        return response($response, 201);
+        return response($response, 200);
     }
 
     public function delete($id){
@@ -70,7 +70,7 @@ class Theacher_Auth extends Controller
             'id' => $id,
             'message' => "Berhasil dihapus"
         ];
-        return response($response, 201);
+        return response($response, 200);
     }
 
 }
